@@ -33,6 +33,9 @@ export const App = () => {
     api.changeLikeStatus(_id, isLiked)
       .then((newPost) => {
         const newPostsState = posts.map((p) => {
+          console.log('Карточка с сервера: ', newPost);
+          console.log('Карточка из стейта в переборе: ', p);
+
           return p._id === newPost._id ? newPost : p
         })
         setPosts(newPostsState)
