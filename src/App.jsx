@@ -1,18 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { postData } from "./posts";
-import { PostsList } from "./components/PostsList";
 import { CardHeader} from './components/Header';
 import { CardFooter } from "./components/footer";
 import CssBaseline from '@mui/material/CssBaseline';
-import Box from '@mui/material/Box';
-import Container from '@mui/material/Container';
-import { Button, Pagination } from "@mui/material";
 import api from './utils/Api';
+import { PagePost } from "./pages/ProductPage/ProductPage";
+import { PageAllPosts } from "./pages/CatalogPage/CatalogPage";
+import { Route, Routes } from "react-router-dom";
+import { CurrentUserContext } from "./context/currentUserContext";
 
+import s from './index.css';
 
 export const App = () => { 
   const [posts, setPosts] = useState(postData);
-  const [page, setPage] = useState(1);
   const [currentUser, setCurrentUser] = useState({});
 
   useEffect(() => {
@@ -42,17 +42,55 @@ export const App = () => {
       })
   }
 
+  const handlePostDelete = (_id) => {
+   if(confirm('Удалить?')) {
+    api.deletePost(_id)
+    .then((data) => {
+      const newPostAfterDelete = posts.filter((post) => post._id !== data._id)
+      setPosts(newPostAfterDelete)
+    })
+   }
+  }
+
   return (
     <>
-        <CardHeader user={currentUser} opUpdataUser={handleUpdateUser}/>
+<CurrentUserContext.Provider value={currentUser}>
+<CardHeader 
+        opUpdataUser={handleUpdateUser}
+        />
         <React.Fragment>
       <CssBaseline />
-         <Button>Create post</Button>
-         <PostsList postsData={posts} onPostLike={handlePostLike} currentUser={currentUser}/>
-        <Pagination page={page} onChange={setPage}/>
+         {/* <PostsList postsData={posts} onPostLike={handlePostLike} currentUser={currentUser}/>
+        <Pagination page={page} onChange={setPage}/> */}
+       <Routes>
+      
+        <Route path="/" element={
+          <PageAllPosts 
+            currentUser = {currentUser}
+            posts = {posts}
+            handlePostLike = {handlePostLike}
+            handlePostDelete = {handlePostDelete}
+            />
+        }/>
+
+      <Route path="/post/:postID" element={
+         <PagePost 
+         currentUser = {currentUser} 
+         posts = {posts}
+         handlePostLike = {handlePostLike}
+         />
+       }/>
+
+       <Route path="*" element={
+       <h1>Страница не найдена</h1>
+       }/>
+
+       </Routes>
+
     </React.Fragment>
 
         <CardFooter/>
+</CurrentUserContext.Provider>
     </>
   );  
 };

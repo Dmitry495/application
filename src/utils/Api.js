@@ -44,8 +44,25 @@ class Api {
 			  },
 		 }).then(onResponce)
 	}
-	
+
+	getPostById(postID){
+		return fetch(`${this._baseUrl}/posts/${postID}`, {
+			 headers: {
+				   authorization: this._token,
+			 },
+		}).then(onResponce)
+   }	
+
+   deletePost(postId) {
+	return fetch(`${this._baseUrl}/posts/${postId}`, {
+		method: 'DELETE',
+		headers: {
+			authorization: this._token,
+		},
+	}).then(onResponce)
+   }
 }
+
 
 const config = {
 	baseUrl: 'https://api.react-learning.ru',

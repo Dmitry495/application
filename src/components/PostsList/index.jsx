@@ -2,7 +2,7 @@ import React from "react";
 import { Grid  } from '@mui/material';
 import { Post } from "../Post";
 
-export const PostsList = ({postsData, onPostLike, currentUser}) => {
+export const PostsList = ({postsData, onPostLike, handlePostDelete}) => {
   
   return (
     <>  
@@ -13,7 +13,7 @@ export const PostsList = ({postsData, onPostLike, currentUser}) => {
                       key={post._id} 
                       {...post} 
                       onPostLike={onPostLike}
-                      currentUser={currentUser}
+                      handlePostDelete={handlePostDelete}
                     />
 
             })}

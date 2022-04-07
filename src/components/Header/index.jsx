@@ -2,10 +2,13 @@ import React from 'react';
 import AppBar  from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
+import { CurrentUserContext } from '../../context/currentUserContext';
 
 import style from './styles.module.css';
+import { useContext } from 'react';
 
-export const CardHeader = ({childer, user}) => { 
+export const CardHeader = () => { 
+  const currentUser = useContext(CurrentUserContext);
   
 
   return (
@@ -16,9 +19,9 @@ export const CardHeader = ({childer, user}) => {
       <a href="https://react-learning.ru/">Remix</a>
       </Typography>
       <div>
-        {user.email && <span>{user.email}</span>}
+        {currentUser.email && <span>{currentUser.email}</span>}
         <br/>
-        {user.name && <span>{user.name} : {user.about}</span>}
+        {currentUser.name && <span>{currentUser.name} : {currentUser.about}</span>}
       </div>
       <a href="https://react-learning.ru/">Home</a>
       <a href="https://react-learning.ru/">Remix Docs</a>
